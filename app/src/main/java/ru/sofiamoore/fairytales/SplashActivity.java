@@ -81,6 +81,7 @@ public class SplashActivity extends AppCompatActivity {
 				SharedPreferences.Editor editor = prefs.edit();
 				editor.putInt(PREF_LAST, i - 1);
 				editor.apply();
+				tempFile.delete();
 				e.printStackTrace();
 				return null;
 			} catch(IOException e) {
