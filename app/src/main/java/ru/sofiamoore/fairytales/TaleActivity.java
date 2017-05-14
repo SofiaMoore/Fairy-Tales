@@ -18,7 +18,7 @@ public class TaleActivity extends AppCompatActivity {
 		
 		author = getIntent().getStringExtra(AuthorActivity.EXTRA_AUTHOR);
 		tale = getIntent().getStringExtra(EXTRA_TALE);
-		
+		// как браузер webView
 		web = (WebView)findViewById(R.id.web);
 		web.loadUrl("file://" + getExternalFilesDir(author).getAbsolutePath() + '/' + tale + ".htm");
 	}

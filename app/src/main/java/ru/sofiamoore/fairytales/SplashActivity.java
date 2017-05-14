@@ -28,6 +28,7 @@ public class SplashActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_splash);
+		//создаем объект штуки, которая позволяет редактировать настройки приложения
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		new DownloadTask().execute();
 	}
@@ -37,10 +38,12 @@ public class SplashActivity extends AppCompatActivity {
 		@Override
 		protected Object doInBackground(Object... p1) {
 			File outDir = getExternalFilesDir(null);
+			// создаем файл, в который качается, распаковывается, а потом удаляется
 			File tempFile = new File(getExternalCacheDir(), "temp.zip");
 			
 			int i = 0;
 			try {
+				//скачивает все архивы с 0.zip и т.д.
 				for(i = prefs.getInt(PREF_LAST, -1) + 1;; i++) {
 					tempFile.createNewFile();
 
@@ -53,9 +56,10 @@ public class SplashActivity extends AppCompatActivity {
 
 					output.close();
 					input.close();
-						
+					//распаковка архива
 					ZipInputStream stream = new ZipInputStream(new FileInputStream(tempFile));
 					ZipEntry entry;
+
 					while((entry = stream.getNextEntry()) != null) {
 						File outFile = new File(outDir, entry.getName());
 						if(entry.isDirectory()) {
@@ -72,6 +76,7 @@ public class SplashActivity extends AppCompatActivity {
 						
 					stream.close();
 				}
+				//записываем значения послднего архива, для того, чтобы не скачивать одни и те же архивы
 			} catch(FileNotFoundException e) {
 				SharedPreferences.Editor editor = prefs.edit();
 				editor.putInt(PREF_LAST, i - 1);
